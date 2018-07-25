@@ -41,10 +41,10 @@ opsman_domain_or_ip_address: CHANGEME
 pivnet_token: CHANGEME
 
 # The globs regular expression for the PivNet resource to download the product
-# release files. "*pivotal" is the default.
+# release files. "cf*pivotal" is the default.
 # For products such as ERT, it is recommended to use "cf*pivotal" to avoid the
 # extra download of the SRT file in PCF 1.12.*
-product_globs: "*pivotal"
+product_globs: "cf*pivotal"
 
 # om-linux
 # ------------------------------
@@ -54,7 +54,7 @@ product_globs: "*pivotal"
 # This can be found in the URL of the product page, e.g. for rabbitmq the URL
 # is https://network.pivotal.io/products/pivotal-rabbitmq-service, and the
 # product slug is 'pivotal-rabbitmq-service'.
-product_slug: CHANGEME
+# product_slug: CHANGEME
 
 # The minor product version to track, as a regexp. To track 1.11.x of a product, this would be "^2\.0\.[0-9]+$", as shown below.
 product_version_regex: CHANGEME

@@ -1,49 +1,16 @@
-resource_types:
-- name: pivnet
-  type: docker-image
-  source:
-    repository: pivotalcf/pivnet-resource
-    tag: latest-final
-
-resources:
-- name: pcf-pipelines
-  type: git
-  source:
-    uri: git@github.com:pivotal-cf/pcf-pipelines.git
-    branch: master
-    private_key: {{git_private_key}}
-
-- name: schedule
-  type: time
-  source:
-    start: "12:00 AM"
-    stop: "11:59 PM"
-    location: America/Los_Angeles
-    days: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
-
 jobs:
 - name: upload-stemcell
   plan:
   - get: schedule
     trigger: true
-  - task: upload-stemcell
-    params:
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
-      OPSMAN_CLIENT_ID: {{opsman_client_id}}
-      OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
-      OPSMAN_USERNAME: {{opsman_admin_username}}
-      OPSMAN_PASSWORD: {{opsman_admin_password}}
-      API_TOKEN: {{pivnet_token}}
-      IAAS_TYPE: {{iaas}}
-    config:
-      platform: linux
+  - config:
       image_resource:
-        type: docker-image
         source:
           repository: pcfnorm/rootfs
-
+          tag: 1.0.15
+        type: docker-image
+      platform: linux
       run:
-        path: bash
         args:
         - -c
         - |
@@ -128,18 +95,73 @@ jobs:
           }
 
           main
-
+        path: bash
+    params:
+      API_TOKEN: {{pivnet_token}}
+      IAAS_TYPE: {{iaas}}
+      OPSMAN_CLIENT_ID: {{opsman_client_id}}
+      OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_PASSWORD: {{opsman_admin_password}}
+      OPSMAN_USERNAME: {{opsman_admin_username}}
+    task: upload-stemcell
 - name: apply-updates
   plan:
   - get: schedule
-    passed: [ upload-stemcell ]
+    passed:
+    - upload-stemcell
     trigger: true
-  - get: pcf-pipelines
-  - task: apply-updates
-    file: pcf-pipelines/tasks/stage-and-apply-updates/task.yml
+  - do:
+    - get: pcf-pipelines-tarball
+    - config:
+        image_resource:
+          source:
+            repository: pcfnorm/rootfs
+            tag: 1.0.15
+          type: docker-image
+        inputs:
+        - name: pcf-pipelines-tarball
+        outputs:
+        - name: pcf-pipelines
+        platform: linux
+        run:
+          args:
+          - -c
+          - tar -xvf pcf-pipelines-tarball/*.tgz
+          path: bash
+      task: unpack-tarball
+  - file: pcf-pipelines/tasks/stage-and-apply-updates/task.yml
     params:
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
-      OPSMAN_USERNAME: {{opsman_admin_username}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
       OPSMAN_PASSWORD: {{opsman_admin_password}}
+      OPSMAN_USERNAME: {{opsman_admin_username}}
+    task: apply-updates
+resource_types:
+- name: pivnet
+  source:
+    repository: pivotalcf/pivnet-resource
+    tag: latest-final
+  type: docker-image
+resources:
+- name: pcf-pipelines-tarball
+  source:
+    api_token: {{pivnet_token}}
+    product_slug: pcf-automation
+    product_version: v0.23.6
+  type: pivnet
+- name: schedule
+  source:
+    days:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    location: America/Los_Angeles
+    start: 12:00 AM
+    stop: 11:59 PM
+  type: time

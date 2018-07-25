@@ -119,7 +119,6 @@ frontend_idle_timeout: 239
 
 
 # Optional - if your git repo requires an SSH key.
-git_private_key:
 
 # Required if haproxy_forward_tls is enabled - HAProxy will use the CA provided to verify the certificates provided by the router.
 haproxy_backend_ca:

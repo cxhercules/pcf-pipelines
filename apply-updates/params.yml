@@ -10,4 +10,3 @@ pivnet_token:             # Pivnet token for downloading resources from Pivnet. 
 
 iaas:
 
-git_private_key:

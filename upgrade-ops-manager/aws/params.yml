@@ -19,7 +19,6 @@
 existing_opsman_vm_name: CHANGEME
 
 # Optional - if your git repo requires an SSH key.
-git_private_key:
 
 # Ops Manager Admin Credentials - set during the installation of Ops Manager
 # Either opsman_client_id/opsman_client_secret or opsman_admin_username/opsman_admin_password needs to be specified

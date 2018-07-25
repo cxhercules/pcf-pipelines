@@ -33,6 +33,7 @@ resources:
   type: docker-image
   source:
     repository: pcfnorm/rootfs
+    tag: 1.0.15
     tag: latest
     username: {{dockerhub_username}}
     password: {{dockerhub_password}}
@@ -111,6 +112,7 @@ jobs:
         type: docker-image
         source:
           repository: pcfnorm/rootfs
+          tag: 1.0.15
       inputs:
       - name: ops-manager-pivnet
       outputs:
@@ -143,6 +145,7 @@ jobs:
         type: docker-image
         source:
           repository: pcfnorm/rootfs
+          tag: 1.0.15
       inputs:
       - name: elastic-runtime-pivnet
       outputs:
@@ -175,6 +178,7 @@ jobs:
         type: docker-image
         source:
           repository: pcfnorm/rootfs
+          tag: 1.0.15
       inputs:
       - name: czero-cflinuxfs2
       - name: czero-cflinuxfs2-version

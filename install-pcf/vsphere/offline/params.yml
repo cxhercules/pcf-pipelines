@@ -45,7 +45,6 @@ router_tls_ciphers: "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384"
 company_name:
 
 # If set to a non-empty string, bypass DNS when uploading stemcells to Ops Manager
-company_proxy_domain:
 
 # c2c networking network cidr
 container_networking_nw_cidr: 10.255.0.0/16
@@ -117,7 +116,6 @@ enable_vm_resurrector: true
 ert_errands_to_disable: none
 
 # PCF Elastic Runtime minor version to track
-ert_major_minor_version: ^2\.0\.[0-9]+$ # ERT minor version to track (e.g ^2\.0\.[0-9]+$ will track 2.0.x versions)
 
 # AZ to use for deployment of ERT Singleton jobs
 ert_singleton_job_az: CHANGEME
@@ -283,13 +281,11 @@ opsman_disk_type: "thin"
 opsman_domain_or_ip_address: CHANGEME
 
 # PCF Ops Manager minor version to track
-opsman_major_minor_version: ^2\.0\.[0-9]+$ # Ops Manager minor version to track (e.g ^2\.0\.[0-9]+$ will track 2.0.x versions)
 
 # SSH password for Ops Manager (ssh user is ubuntu)
 opsman_ssh_password: CHANGEME
 
 # Pivnet token for downloading resources from Pivnet. Find this token at https://network.pivotal.io/users/dashboard/edit-profile
-pivnet_token: CHANGEME
 
 # Optional. If blank the cert(s) will be generated
 poe_ssl_name1:
@@ -384,3 +380,9 @@ vcenter_usr: CHANGEME              # vCenter username. If user is tied to a doma
 
 # Disk type for BOSH provisioned VM. (thick|thin)
 vm_disk_type: "thick"
+
+# offline resource config
+s3_endpoint:
+s3_bucket:
+s3_access_key_id:
+s3_secret_access_key:
